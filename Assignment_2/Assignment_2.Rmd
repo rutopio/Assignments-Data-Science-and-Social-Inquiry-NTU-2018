@@ -1,0 +1,291 @@
+---
+title: "Assignment #2 for DSSI"
+author: "B05102074 何青儒 Ho Ching Ruu"
+date: 2018-10-01
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+***
+# MENU
+
+- [R01_2 vector](#R01_2)
+    - [Practice I](#R01_2_1)
+    - [Practice II](#R01_2_2)
+
+- [R01_4 dataframe tp theft](#R01_4)
+    - [Practice I](#R01_4_1)
+    - [Practice II](#R01_4_2)
+
+- [R01_5 prac load and summarize tweet data](#R01_5)
+    - [Question I](#R01_5_1)
+    - [Question II](#R01_5_2)
+
+***
+
+<h1 id="R01_2">R01_2 vector</h1>
+<h3 id="R01_2_1">Practice I</h3>
+
+0. Generate the origin data
+```{r}
+# Generate x.a with 1000 numbers with mean = 1 sderr = 10
+x.a <- rnorm(1000, 1, 10) 
+```
+
+1. Filter out extreme values out of two standard deviations
+```{r}
+# Use subset() to filter out the value we do not need
+# Put the value that we need into xfilter
+xfilter <- subset(x.a, x.a <= mean(x.a) + 2*sd(x.a) & x.a >= mean(x.a) - 2*sd(x.a))
+```
+
+2. Plotting the distribution of the remaining vector x.a
+```{r}
+# Scatter plot
+plot(xfilter, main = "在兩個標準差內的 x.a", xlab = "Index of x.a", ylab = "Value of x.a")
+# Density plot
+plot(density(xfilter), main = "兩個標準差內的 x.a 分佈密度", xlab = "Value of x.a", ylab = "Density of x.a")
+```
+
+3. Calculate the 25%, 50% and 75% quantile of vector x.a. 
+```{r}
+# Generate a vector named Qan to save quantile of xfilter
+Qan <- quantile(xfilter, probs=seq(0, 1, 0.25))
+
+# Show quantile of xfilter
+Qan
+```
+
+4. Get the number between 25% to 75% and assign to x.a1
+```{r}
+# Use double [] ([[i]]) for the named numeric vector Qan
+x.a1 <- subset(xfilter, xfilter >= Qan[["25%"]] & xfilter <= Qan[["75%"]] )
+```
+
+5. Plotting x.a1
+```{r}
+# Scatter plot
+plot(x.a1, main = "在第一四分位數和第三四分位數內的 x.a", xlab = "Index of x.a", ylab = "Value of x.a")
+# Density plot
+plot(density(x.a1), main = "在第一四分位數和第三四分位數內的 x.a 分佈密度", xlab = "Value of x.a", ylab = "Density of x.a")
+```
+
+***
+
+<h3 id="R01_2_2">Practice II</h3>
+
+**Accessing characters**
+
+1. Generate the origin data
+```{r}
+x.b <- c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k")
+```
+
+2. Get only elements at odd positions and assign to x.b1
+```{r}
+# Only the elements at odd position will be TRUE and save to x.b1
+# Elements at even position will be FALSE and be ignored
+x.b1 <- x.b[c(TRUE,FALSE)]
+```
+
+3. Truncate the first 2 elements and the last 2 elements and assign to x.b2
+```{r}
+n <- length(x.b1)
+# Defined n be the length of x.b
+
+x.b2 <- x.b1[3:(n-2)]
+# Only the third element to the lsat 2 element will assign to x.b2
+```
+
+4. Result
+```{r}
+# Show each vector
+x.b
+x.b1
+x.b2
+```
+
+***
+
+<h1 id="R01_4">R01_4 dataframe tp theft</h1>
+
+Something we need to command first.
+```{r}
+url <- "http://data.taipei/opendata/datalist/datasetMeta/download?id=68785231-d6c5-47a1-b001-77eec70bec02&rid=34a4a431-f04d-474a-8e72-8d3f586db3df"
+df <- read.csv(url, fileEncoding = "big5")
+df$time <- substr(df$發生時段, 1, 2)
+df$region <- substr(df$發生.現.地點, 4, 5)
+```
+
+***
+
+<h3 id="R01_4_1">Practice I</h3>
+
+**Using mosaicplot() to check what happens if you swap the time and region in tapply()**
+
+> Befor (the original method and mosaicplot)
+
+```{r}
+res <- tapply(df$編號, list(df$time, df$region), length, default = 0)
+mosaicplot(res, main = "台北市竊盜率（以橫軸為地點，縱軸為時間）", xlab = "時間", ylab = "地點")
+```
+
+> After (swap the time and region)
+
+```{r}
+res_swap <- tapply(df$編號, list(df$region, df$time), length, default = 0)
+mosaicplot(res_swap, border=0, main = "台北市竊盜率（以橫軸為地點，縱軸為時間）", ylab = "時間", xlab = "地點")
+```
+
+We can observe that the x-axis and y-axis are be reversed.
+
+***
+
+<h3 id="R01_4_2">Practice II</h3>
+
+**Does it possible to extract month  by substr()?**
+```{r}
+# Use stringr function
+library("stringr")
+x <- df$發生.現.日期
+
+# Month
+df$month <- str_sub(x, -4, -3) 
+
+res2 <- tapply(df$編號, list(df$month, df$region), length,default = 0)
+res2 <- tapply(df$編號, list(df$region, df$month), length,default = 0)
+
+# Mosaicplot
+mosaicplot(res2, border=0, off = 3, main = "台北市竊盜率（以橫軸為地點，縱軸為月份）", ylab = "月份", xlab = "地點")
+
+```
+
+***
+
+<h1 id="R01_5">R01_5 prac load and summarize tweet data</h1>
+
+<h3 id="R01_5_1">Question I</h3>
+
+**當現在載入了他人所蒐集且開放的Trump's tweets後，你會形成什麼樣的假設？你會探討什麼問題？**
+
+    不得不說 Trump 一直以來都超愛用 Twitter，從大事小事私事國家大事都曾用 Twitter 發言，甚至常被說是用 Twitter 來治國。
+
+    而 Trump 常用 Twitter 的原因有很多種說法，其中我覺得最有道理的一種說法是 Trump 認為比起在白宮或是國會開記者會說著無趣又正式的官方新聞稿，Twitter 這種每篇不到 200 字的即興小短文，更能讓喜歡的人和媒體知道他在講什麼、想什麼。
+
+    事實上，當我們回頭審視 Trump 在選前以的摧票演講及選後的上任演講時，我們不難發現他都用那些簡單不生澀、接近庶民、連國小生都廳的懂的字詞來組織他的演講內容。一方面是他本來就不是玩政治出生，那些政府或政客之間常用的 doublespeak word 對他而言根本不了解；而令一方面，使用接近庶民的語言，也能拉近他和選民之間的距離，形塑一種親切的感覺。
+
+    透過他 Twitter 每則推文所使用的字數，以及每則推文所得到的愛心數，或許我們可以迴歸出一個「當一篇貼文約有多少字時，一般人會選擇停下滑動態的手指，觀看整篇貼文，然後按下愛心」。
+
+    畢竟如果一篇推文太短，那我們在滑閱動態的時候很容易就會忽略掉；反之，當一篇推文太長時，我們也往往覺得太冗太多字不想看然後直接滑掉。
+
+***
+
+<h3 id="R01_5_2">Question II</h3>
+
+**除了想像這份資料可以做什麼分析外，請嘗試執行下列程式碼。請問，下列程式碼的執行結果分別可以回答什麼樣的問題？**
+
+
+#### begin
+
+1. 從 varianceexplained.org 抓下 trump_tweets 的 data.frame
+```{r}
+load(url("http://varianceexplained.org/files/trump_tweets_df.rda"))
+df <- trump_tweets_df
+```
+
+2. 篩選川普所發的推特，被按愛心（Favorite）的數量兩個標準差內的所有推文，並把他存到 filter.df 裡面
+```{r}
+filter.df <- df[df$favoriteCount > mean(df$favoriteCount) +2*sd (df$favoriteCount),]
+# View(fliter.df)
+```
+
+3. 篩選川普所發的推特，被轉推（ReTweet）的數量兩個標準差內的所有推文，並把他存到 filter.df2 裡面
+```{r}
+filter.df2 <- df[df$retweetCount > mean(df$retweetCount) + 2* sd (df$retweetCount),]
+# View(fliter.df2)
+```
+
+4. 遞減排序 filter.df 裡面的推文，並把他存到 order.df 裡面
+```{r}
+order.df <- df[order(df$favoriteCount, decreasing = TRUE),]
+# View(order.df[1:10,])
+```
+
+5. 上面 2. 到 4. 的步驟，也可以用 Pipeline 運算子進行
+```{r}
+# pipeline要從tidyverse函式庫呼叫
+# Ubuntu/Debian下要追加以下lib才能安裝tidyverse
+# curl: $sudo apt-get install curl 
+# libssl-dev: $sudo apt-get install libssl-dev 
+# libcurl: $sudo apt-get install libcurl4-openssl-dev 
+# xml2: $sudo apt-get install libxml2-dev
+install.packages("tidyverse")
+
+# 引入
+library("tidyverse")
+
+# 效果同步驟2
+filter.df3 <- df %>%
+    filter(df$favoriteCount > mean(df$favoriteCount) + 2*sd(df$favoriteCount))
+
+# 效果同步驟3
+filter.df4 <- df %>%
+    arrange(-favoriteCount)
+```
+
+***
+
+#### plot histogram
+* What is histogram? What is density function?
+
+    Histogram = **直條圖**
+
+1. 依愛心數量生成直條圖
+```{r}
+# histogram
+hist(df$favoriteCount, breaks = 1000, main = "依愛心數量生成的直條圖", xlab = "愛心數目", ylab = "推文數")
+```
+
+2. 依每篇文字字數生成直條圖
+```{r}
+# nchar : Count the Number of Characters
+df$nchar <-nchar (df$text)
+
+# histogram
+hist(df$nchar, breaks= 1000, main = "依每篇文字字數生成的直條圖", xlab = "字數", ylab = "推文數")
+```
+
+事實上，在 2017 年前，推特每則推文不能超過 140 字，爾後才開放到 280 字
+
+***
+
+#### take a glance on the data
+```{r}
+# View(order.df[ ,c(1,3,5,8,10,12)])
+# View(order.df[, c("text","favoriteCount")])
+
+# 查看整個df
+View(df)
+# 預覽前幾筆df
+head(df)
+class(df)
+str(df)
+
+class(df$text)
+class(df$truncated)
+df$truncated
+class(df$favoriteCount)
+class(df)
+mode(df)
+```
+
+***
+
+所以其實我們做的事情還不夠，我們想討論的是每篇貼文字數和愛心數之間的關係，而非兩者單單的數目。從上面幾行程式碼，我們頂多知道 Trump 每則推文約能得到兩萬到三萬左右的愛心、以及每則推文大概介於 130-140 字左右。
+
+從前面的命題，以及上面的程式碼，我們還沒辦法給出兩者之間的關係。
+
+***

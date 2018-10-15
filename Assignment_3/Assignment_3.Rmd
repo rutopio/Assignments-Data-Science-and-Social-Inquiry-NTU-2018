@@ -1,0 +1,191 @@
+---
+title: "Assignment #3 for DSSI"
+author: "B05102074 何青儒 Ho Ching Ruu"
+date: 2018-10-09
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+***
+# MAIN MENU
+
+- [Section2](#S2)
+- [Section3](#S3)
+
+***
+
+<h1 id="S2">Section 2</h1>
+
+下載或直接讀取空氣品質資料，並依照 R02_3 read json ubike.Rmd 的方法繪製空氣品質地圖。
+
+上色應依照空氣品質監測網的上色方式。
+
+0. 引入必要的library
+
+```{r}
+
+# install.packages('ggplot2')
+# install.packages('ggmap')
+
+library(httr)
+library(jsonlite)
+library(ggplot2)
+library(ggmap)
+options(stringsAsFactors = F)
+
+# 因為 Google 爸爸說從 2018/7/16 開始限制 Google Map 的使用和讀取，所以我們用 API 吧
+# News: http://technews.tw/2018/07/16/google-maps-due-date-is-on-api-key-access-is-charging-more-expensive-and-restricted-and-will-effect-government/
+# Ref: https://github.com/dkahle/ggmap/issues/51
+
+require(devtools)
+devtools::install_github("dkahle/ggmap", ref = "tidyup")
+
+# import google api
+# The api-key will be removed after generating the html file.
+
+register_google(key = 'AIzaSyAvMcKUuEy5_xdT8h4h-rnSkaNwHU9NEP8') 
+
+```
+
+1. 開始作正事
+
+```{r}
+# 匯入 空氣品質資料 
+url <- 'https://taqm.epa.gov.tw/taqm/aqs.ashx?lang=tw&act=aqi-epa&ts=1538931940046'
+
+# JSON FILE
+air <- fromJSON(content(GET(url), 'text', encoding = 'utf-8'))
+
+# 轉成data.frame
+air.df <- as.data.frame(air$Data)
+```
+
+2. 把 date.frame 裡面的 char 轉成 int
+
+```{r}
+# 經緯度
+air.df$lat <- as.numeric(air.df$lat,na.rm='TRUE')
+air.df$lng <- as.numeric(air.df$lng,na.rm='TRUE')
+
+# AQI
+air.df$AQI <- as.numeric(air.df$AQI,na.rm='TRUE',defalt=0)
+
+# 把 NA 轉成0
+air.df[is.na(air.df)] <- 0
+```
+
+3. 先把地圖準備好
+
+```{r}
+map <- get_map(location = c(lon = 121.0565847, lat = 23.6619723), zoom = 7, language = 'zh-TW', maptype = 'satellite')
+```
+
+4. 判斷 AQI 顏色的 function
+
+```{r}
+# 污染源大小顏色來源：https://taqm.epa.gov.tw/taqm/tw/b0203.aspx
+
+# AQI color function
+AQI_color <- function(ratio){
+  if(ratio <= 50){
+    return('#00e800') # green
+  }
+  else if(ratio >= 51 && ratio <= 100 ){
+    return('#ffff00') # yello
+  }
+  else if(ratio >= 101 && ratio <= 150 ){
+    return('#ff7e00') # orange
+  }
+  else if(ratio >= 151 && ratio <= 200 ){
+    return('#ff0000') # red
+  }
+  else if(ratio >= 201 && ratio <= 300 ){
+    return('#8f3f97') # purple
+  }
+  else{
+    return('#7e0023') # disgusting_china_passport_color
+  }
+}
+
+```
+
+5. 把顏色畫上去
+
+```{r}
+air.df$AQI_col <- sapply(air.df$AQI, AQI_color)
+
+# Title
+TitleChar = paste0('台灣即時AQI（更新時間：',air.df$Time[1],'）')
+
+# Combine Map and points
+FinMap = 
+  ggmap(map) + 
+  geom_point( data = air.df , aes ( x = lng, y = lat), 
+              colour = (air.df$AQI_col), size=(air.df$AQI)/15, alpha=0.4) + 
+  labs(title=TitleChar,x = 'Longitude', y = 'Latitude')
+
+# Output
+FinMap
+```
+
+***
+
+<h1 id="S3">Section 3</h1>
+
+讀取以下資料集中的任一個json並轉成 Data.frame
+
+- 違規藥品廣告資料 (https://data.gov.tw/dataset/14196)
+- 違規化妝品廣告資料（https://data.gov.tw/dataset/14198）
+- 健康食品資料集（https://data.gov.tw/dataset/6951)
+
+這裡選擇用健康食品資料集（https://data.gov.tw/dataset/6951)
+
+0. 讀取網站
+
+```{r}
+# installed.packages('jsonlite')
+
+# import library
+library(jsonlite)
+
+# import 健康食品資料集 url 
+url <- 'https://data.fda.gov.tw/opendata/exportDataList.do?method=ExportData&InfoId=19&logType=3'
+
+# read json file
+healthfood <- fromJSON(url)
+
+# 打開來看一下格式，發現是一個很大的list
+class(healthfood)
+head(healthfood)
+```
+
+1. 開始把他轉成dataframe
+
+```{r}
+
+# 先把原本的list解開
+healthfood.v <- unlist(healthfood)
+
+# 把NA的部份刪掉
+healthfood.v <- healthfood.v[!is.na(healthfood.v)]
+
+# 觀察資料，發現這個json檔每11的row為一筆資料
+# 接著把他轉成matrix
+healthfood.m <- matrix(healthfood.v, byrow = T, ncol = 11)
+
+# 從matrix到data.frame
+healthfood.df <- as.data.frame(healthfood.m)
+
+# 加上每個column的名字
+names(healthfood.df) <- c(
+  '許可證字號','類別','中文品名','核可日期','申請商','證況','保健功效相關成分','保健功效','保健功效宣稱','警語','注意事項')
+
+# 檢查class
+class(healthfood.df)
+head(healthfood.df)
+```
+
+***
