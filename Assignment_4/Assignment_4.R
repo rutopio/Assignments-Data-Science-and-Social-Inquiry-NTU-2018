@@ -22,6 +22,6 @@ for(i in 1:5){
 
 rm(tmpres)
 
-# rm(tmpres)
-
 View(resdata)
+
+saveRDS(resdata, file = "data.rds")
