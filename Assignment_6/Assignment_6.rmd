@@ -1,0 +1,246 @@
+---
+title: "Assignment #6 for DSSI"
+author: "B05102074 何青儒 Ho Ching Ruu"
+date: 2018-11-11
+output: html_document
+
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+1. 引入會用到的library
+```{r}
+install.packages("jiebaR")
+library(tidyverse)
+library(stringr)
+library(tidytext)
+library(jiebaR)
+library(purrr)
+library(lubridate)
+library(scales)
+```
+
+2. 把我們要分析的typhoon.rds引入R環境裡面
+```{r}
+news.df <- readRDS("data/typhoon.rds")
+
+# 檢查一整個dataframe的數量，這裡顯示總共有4706個row，8個column。
+dim(news.df)
+
+# 檢查每一個column的標題
+# 分別有link（連結）、title（標題）、time（時間）、report（寫報導的記者）、from（新聞源）、text（內文）、cat（時間區分，這裡的early是指1992年以前的新聞，late是指2016年後的新聞）
+names(news.df)
+```
+
+3. 引入不想被分割的詞
+```{r}
+# 因為中文不像英文那樣每個辭彙中間會空格，所以如果有辭彙不想被拆分的話就要窮舉出來
+# 這裡把不想拆分開來的辭彙窮舉到segment_not裡面
+segment_not <- c("質疑","中央","縣政府","市政府","中央政府","蘇南成","災前","災後","莫拉克","颱風","應變中心","停班停課","停課","停班","停駛","議會","路樹","阿扁","里長","賀伯","採收","菜價","蘇迪","受災戶","颱風警報","韋恩","台東縣","馬總統","馬英九","陳水扁","行政院長","立法院","陳總統","豪大雨","梅姬","台東","台北市政府","工務段","漂流木","陳菊","行政院","台南縣","卡玫基","魚塭","救助金","陳情","檢討","強颱","中颱","輕颱","小林村","野溪","蚵民","農委會","國民黨","民進黨","來襲","中油公司","中央政府","颱風天","土石流","蘇迪勒","水利署","陳說","颱風假","颱風地區","台灣","臺灣","柯羅莎","八八風災","紓困","傅崑萁","民進黨","國民黨","中央黨部","台中","鄉民","縣政府","表示","文旦柚","鄉鎮市公所","鄉鎮市","房屋稅","高雄","未達","台灣省","台北市","道歉","民調","八成","責任","政治責任")
+
+# worker()函式是jiebaR這個library的東西，用來新建一個分詞引擎
+# 這裡命名為cutter
+# ref:https://zhuanlan.zhihu.com/p/25681782
+cutter <- worker()
+
+# new_user_word()同樣源自jiebaR，可以增加字定義的辭彙
+# 換句話說，如果我們沒有加入segment_not，那麼jiebaR就會用預設的方法幫我們切詞
+# ref:https://github.com/qinwf/jiebaR/issues/26
+new_user_word(cutter, segment_not)
+
+# 把讓切詞停止的keyword引入到stopWords，告訴jiebaR到這邊就要停下來
+stopWords <- readRDS("data/stopWords.rds")
+
+# 順便看一下裡面有啥
+head(stopWords)
+```
+
+4. 開始切東西
+```{r}
+# 先切2000-2008年民進黨執政時期的資料
+# tokenized.df就是我們等一下把東西切開來之後會存進去的dataframe
+tokenized_DPP.df <- news.df %>%
+  # 後面的mutate是dplyr這個library特有的函式，用來新增dataframe的column
+  # 這裡在tokenized.df新增一個column，名為timestamp，把news.df裡的time轉存到這裡
+    mutate(timestamp=ymd(time)) %>% 
+  # 如果我們要篩一段時間內的新聞就好，可以在這裡加上一個filter
+  # 這裡選2000-05-20到2008-05-20
+    filter(timestamp >= as.Date("2000-05-20") & timestamp < as.Date("2008-05-20")) %>%
+  # 因為我們有前面的timestamp了，這裡就不用news.df裡的time
+  # cat我們也用不到，把他移掉
+    select(-time,-cat,-report,-from) %>%
+  # 選取原本news.df裡面的這幾個column作為分析用
+    select(title, text, timestamp) %>%
+  # 在tokenized.df新增一個column，名為word，用來放切割後的詞
+  # 這段程式碼要拆成幾個部份，首先的purrr是一個讓R有類似OOP處理function的方法
+  # 因為我們要對每一個新聞的text部份進行切割，最簡單的方法就是寫一個for然後行他跑
+  # 可是這樣會有大量loop的部份，這時用map可以減少loop的使用，運行起來也比較快
+  # 他把原本的fumction包裝成另一個funciton以處理我們切割的執行
+    mutate(word = map(text, function(x)segment(x, cutter))) %>%
+  # 最後用party這個column標註這些是DPP時期的新聞
+    mutate(party='DPP')
+  
+# 先切2008-2016年國民黨執政時期的資料
+tokenized_KMT.df <- news.df %>%
+    mutate(timestamp=ymd(time)) %>% 
+    filter(timestamp >= as.Date("2008-05-20") & timestamp < as.Date("2016-05-20")) %>%
+    select(-time,-cat,-report,-from) %>%
+    select(title, text, timestamp) %>%
+    mutate(word = map(text, function(x)segment(x, cutter))) %>%
+    mutate(party='KMT')
+
+# 打開幾篇新聞來檢查原本的新聞是否有被切開字了
+tokenized_DPP.df$text[1]
+tokenized_DPP.df$word[1]
+
+tokenized_KMT.df$text[1]
+tokenized_KMT.df$word[1]
+
+# 最後合併成tokenized.df，再加上doc_id當index
+tokenized.df <- rbind(tokenized_DPP.df,tokenized_KMT.df) %>% mutate(doc_id = row_number())
+
+# 稍微看一下有什麼
+head(tokenized.df)
+```
+
+5. 再來，把所有的keyword都拆開了，這樣比較好統計
+```{r}
+# 這個動作會把上面的tokenized.df$word從array拆開成一個一個詞
+unnested_DPP.df <- tokenized_DPP.df %>% unnest(word)
+unnested_KMT.df <- tokenized_KMT.df %>% unnest(word)
+unnested.df <- tokenized.df %>% unnest(word)
+
+# 應該會有很多很多的row
+dim(unnested_DPP.df)
+dim(unnested_KMT.df)
+dim(unnested.df)
+```
+
+6. 畫出字詞的統計數量
+```{r}
+# DPP的部份
+unnested_DPP.df %>%
+    count(word, sort=T) %>%
+  # 這裡會篩掉stopWords裡的詞
+    filter(!(word %in% stopWords$word)) %>%
+  # 這裡會篩掉大小寫的單一英文字跟數字
+    filter(!str_detect(word, "[a-zA-Z0-9]+")) %>%
+  # 只篩出兩個字以上的詞，否則會篩出一堆「的」、「是」之類的東西
+    filter(nchar(word) > 1) %>%
+  # 只選出現三次的東西
+    filter(n > 3) %>%
+  # 重新排序
+    mutate(word = reorder(word, n)) %>%
+  # 只取前20名多的
+    slice(1:20) %>%
+  # 用ggplot畫圖的部份
+    ggplot() + aes(word, n)+
+    geom_col() + 
+    ggtitle('2000-2008年民進黨執政時間聯合報最常用的字詞')+
+    ylab('出現次數')+
+    xlab('字詞')+
+    coord_flip() + 
+    theme(axis.title.y=element_text(angle = 0,vjust = 0.5),plot.title = element_text(hjust = 0.5))
+
+
+# KMT的部份
+unnested_KMT.df %>%
+    count(word, sort=T) %>%
+    filter(!(word %in% stopWords$word)) %>%
+    filter(!str_detect(word, "[a-zA-Z0-9]+")) %>%
+    filter(nchar(word) > 1) %>%
+    filter(n > 3) %>%
+    mutate(word = reorder(word, n)) %>%
+  # 這裡取20筆就好
+    slice(1:20) %>%
+    ggplot() + aes(word, n)+
+    ggtitle('2008-2016年國民黨執政時間聯合報最常用的字詞')+
+    ylab('出現次數')+
+    xlab('字詞')+
+    geom_col() + 
+    coord_flip() + 
+    theme(axis.title.y=element_text(angle = 0,vjust = 0.5),plot.title = element_text(hjust = 0.5))
+  
+```
+
+7. logratio：分析兩黨時期，聯合報所使用的用字差異
+```{r}
+# 統計用詞出現的次數
+party_word.tf <- unnested.df %>%
+  # 記數
+    count(party, word) %>%
+  # 一樣篩掉不想統計的東西
+    filter(!str_detect(word, "[a-zA-Z0-9]+")) %>%
+    filter(!(word %in% stopWords$word)) %>%
+    filter(nchar(word)>1)
+
+# 統計比例
+party_ratio <- party_word.tf %>%
+  	filter(n>1) %>%
+  	spread(party, n, fill = 0) %>%
+  	ungroup() %>%
+  # 計算比例，最後取log
+  	mutate_if(is.numeric, funs((. + 1) / sum(. + 1))) %>%
+  	mutate(logratio = log(KMT / DPP)) %>%
+  	arrange(desc(logratio))
+ 
+# 畫圖
+party_ratio %>%
+    group_by(logratio > 0) %>%
+    top_n(10, abs(logratio)) %>%
+    ungroup() %>%
+    mutate(word = reorder(word, logratio)) %>%
+    ggplot(aes(word, logratio, fill = logratio < 0)) +
+    geom_bar(stat = "identity") +
+    coord_flip() +
+    ggtitle('聯合報社於兩黨執政時期，用詞出現的次數頻率之比')+
+    xlab('字詞')+
+    ylab("兩黨執政時期用詞出現的次數頻率之比（經取natural log後處理）") +
+    scale_fill_manual(name = "", labels = c("KMT","DPP"),values = c("tomato","lightblue")) +
+    theme(axis.title.y=element_text(angle = 0,vjust = 0.5),plot.title = element_text(hjust = 0.5))
+```
+
+> 理論上而言，唯恐天下不亂的記者和媒體最愛在颱風天或是有災難出現的時候檢討當時的政府，而在兩黨執政期間因為總統不同，所以會檢討的對象也應該會不一樣，但扣除前幾名分別是颱風的名稱後，發現聯合報出現「馬總統」的比例真高啊，而且居然不是用本名「馬英九」，看得出聯合報真～的～有夠愛馬總統ㄉ啦！
+
+8. scatter：用字頻率比較
+```{r}
+# 分析用字的頻率，愈靠近兩軸代表愈靠近兩黨
+frequency <- party_word.tf %>%
+  # 一樣只篩出現次數大於三次的字詞
+    filter(n>3) %>%
+    group_by(party) %>%
+    mutate(proportion = n/sum(n)) %>%
+    select(-n) %>%
+    spread(party, proportion) %>%
+    na.omit()
+
+# 畫圖
+frequency %>%
+ggplot(aes(x = DPP, y = KMT, color = abs(KMT - DPP))) + 
+    geom_abline(color = "gray40", lty = 5) + 
+    geom_point(alpha = 0.1, size = 2.0, width = 0.3, height = 0.3) + 
+    geom_text(aes(label = word), check_overlap = TRUE, size = 3) +
+    theme(legend.position="none") + 
+  # 調整成取log_10的狀態，免得資料太過集中
+    scale_x_log10(labels = percent_format()) +
+    scale_y_log10(labels = percent_format()) +
+    coord_fixed(1)+
+  	ggtitle('聯合報社於兩黨執政時期，用詞出現的次數頻率散佈圖')+
+  	xlab('2000-2008民進黨執政期間')+
+  	ylab('2008-2016國民黨執政期間')+
+  	theme(axis.title.y=element_text(angle = 0,vjust = 0.5),plot.title = element_text(hjust = 0.5))
+  
+```
+
+> 其實我本來是要分析在兩黨部同執政期間，聯合報是否有媒體自助餐的現象。
+>
+> 我本來的預期是在因為聯合報很藍，所以在2000-2008這段阿扁執政期間發生的颱風災害，一定都會說是扁政府的問題，所以「政府」、「中央」這些字眼出現的頻率會高於馬政府時期；而2008-2016這段馬政府期間因為政府是主子、罵不得，所以大多都會說是地方政府的錯，所以「縣政府」、「市政府」等出現的頻率會高於扁政府期間，結果很吊詭的的並沒有很明顯的發現這樣的現象。
+>
+>後來我想想可能可以歸咎於兩個原因。第一個就是上面的分析單單只採用「出現了」幾次當作頻率，而沒有考慮到「中央」或是「地方」政府出現的新聞可能不一樣。有可能這篇出現的「中央」是在怪罪中央政府沒有編列治水經費的缺失，但另一篇卻是用來稱讚「中央」在事後回復家園的時候處理的很好；這篇出現的「地方」可能是在說地方政府都沒有協助救災，但另一篇有可能是在說「地方」在這次災後有幫忙協助重建。我們應該還要考量到每一篇新聞是用持平、稱讚或是譴責的語氣去做分類，再從裡面分別抓出「中央」和「地方」的差別。
+>
+> 例如在2000-2008年期間，「稱讚」類的新聞有可能出現較多的「地方」，而「譴責」類的新聞可能會出現比較多的「中央」；而2008-2016年則是相反過來。這種語氣分類的方法可以從我們切出來的詞中分類、歸納出來，單單只用切出的詞作為計量其實是不夠的。
+>
+>第二個就是「台灣媒體亂象」其實要一直到近十年才開始，基本上在2000年初期，媒體上還保持自律，還不太會用腥羶色的新聞內容博取點閱率，也還不會以奇怪或是聳動的標題吸引人們（如慟！驚！恐！悚！震憾彈！之類的用語），更不會將媒體當成攻擊另外一個政黨的工具。所以如果我們可以把時間拆分成「2008-2016」和「2016-至今」兩筆，可能才會看出所謂「媒體自助餐」的結果。
+
