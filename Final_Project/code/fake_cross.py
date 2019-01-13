@@ -29,6 +29,39 @@ warnings.filterwarnings('ignore')
 # pd.options.display.max_rows = 999
 # pd.options.display.max_columns = 999
 
+
+# 參數設定
+
+#ma_short_period = 4
+#ma_long_period  = 56
+ma_short_period = 5
+ma_long_period  = 15
+# 設定長線和短線的長度，要考慮資料裡每根 candle ohlcv 的單位
+ 
+ma_short_type = 3
+ma_long_type = 4
+# 在 talib 的 MA 函數裡，0 代表 SMA，1 代表 EMA，2 代表 WMA，3 代表 DEMA，4 代表 TEMA
+
+delay_period = 2
+# 要延遲多少個報價
+
+train_data_account_percent = 0.9
+# 要對資料分割多少%給訓練
+
+param_cv_1 = {
+                #'n_estimators': range(100),
+                #'n_estimators': [1,10,20,30,40,50,60,70,80,90,100],
+                'n_estimators': [1,10,100],
+                'max_depth': [4,5,6],
+                'subsample': [0.8],
+                'learning_rate':[0.1],
+                'objective': ['binary:logistic'],
+                'seed':[42],
+                'gamma':[0.1,0.2],
+                'min_child_weight':[1]
+            }
+
+
 # 讀取csv
 filename = sys.argv[1]
 original_data = pd.read_csv(filename,index_col='Date') 
@@ -59,16 +92,6 @@ df = df.drop(['Volume'],axis=1)
 # 圖
 #df.plot(grid=True, figsize=(8, 5))
 #plt.show()
-
-#ma_short_period = 4
-#ma_long_period  = 56
-ma_short_period = 5
-ma_long_period  = 15
-# 設定長線和短線的長度，要考慮資料裡每根 candle ohlcv 的單位
- 
-ma_short_type = 3
-ma_long_type = 4
-# 在 talib 的 MA 函數裡，0 代表 SMA，1 代表 EMA，2 代表 WMA，3 代表 DEMA，4 代表 TEMA
 
 df['sma_short'] = talib.MA(df['Adj Close'], timeperiod = ma_short_period, matype = ma_short_type)
 df['sma_long'] = talib.MA(df['Adj Close'], timeperiod = ma_long_period, matype = ma_long_type)
@@ -156,7 +179,7 @@ df['diff_40'] = df['diff'] - df['diff_40']
 df['diff_50'] = df['diff'] - df['diff_50']
 
 # hold 2 次的情況下
-df['profit_2'] = df['Adj Close'].shift(-2)
+df['profit_2'] = df['Adj Close'].shift(-delay_period)
 df['profit'] = df['profit_2'] - df['Adj Close']
  
 df.loc[df['profit'] > 0.00, 'result'] = 1 # hold好（等20分再買還是賺）
@@ -182,7 +205,7 @@ print(df_golden.shape) #should be (,14)
 # print("n:",n)
 # print("p:",p)
 train_start = 0
-train_end = int(np.floor(0.9*n))
+train_end = int(np.floor(train_data_account_percent*n))
 test_start = train_end + 1
 test_end = n
 train_set = data_array[np.arange(train_start, train_end), :]
@@ -230,18 +253,6 @@ dot_data = tree.export_graphviz(clf_2, out_file=None,
 graph = graphviz.Source(dot_data)  
 #graph.view()
 '''
-param_cv_1 = {
-                #'n_estimators': range(100),
-                #'n_estimators': [1,10,20,30,40,50,60,70,80,90,100],
-                'n_estimators': [1,10,100],
-                'max_depth': [4,5,6],
-                'subsample': [0.8],
-                'learning_rate':[0.1],
-                'objective': ['binary:logistic'],
-                'seed':[42],
-                'gamma':[0.1,0.2],
-                'min_child_weight':[1]
-            }
 
 clf = xgb.XGBClassifier()
 grid_1 = GridSearchCV(clf, param_grid = param_cv_1, cv=5, scoring='accuracy', verbose=1)

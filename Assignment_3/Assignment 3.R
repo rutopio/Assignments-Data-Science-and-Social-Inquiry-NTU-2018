@@ -6,7 +6,7 @@ options(stringsAsFactors = F)
 
 # google api
 # ref: https://github.com/dkahle/ggmap/issues/51
-register_google(key = "AIzaSyAvMcKUuEy5_xdT8h4h-rnSkaNwHU9NEP8") 
+# register_google(key = "YOUR GOOGLE API KEY") 
 
 url <- 'https://taqm.epa.gov.tw/taqm/aqs.ashx?lang=tw&act=aqi-epa&ts=1538931940046'
 air <- fromJSON(content(GET(url), "text", encoding = "utf-8"))

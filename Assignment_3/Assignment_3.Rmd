@@ -46,7 +46,7 @@ devtools::install_github("dkahle/ggmap", ref = "tidyup")
 # import google api
 # The api-key will be removed after generating the html file.
 
-register_google(key = 'AIzaSyAvMcKUuEy5_xdT8h4h-rnSkaNwHU9NEP8') 
+register_google(key = 'YOUR GOOGLE API KEY') 
 
 ```
 
