@@ -1,0 +1,65 @@
+
+library(httr)
+library(jsonlite)
+library(dplyr)
+
+# 先保留抓下來str還是str型態
+options(stringsAsFactors = FALSE)
+
+# 設定編碼
+options(encoding = "UTF-8")
+
+
+
+
+
+# 就是我們剛在小秘密裡面的開頭
+dcardurl <- 'https://www.dcard.tw/_api/forums/'
+
+# 設定我們要抓的看板
+board <- 'relationship'
+
+# 融合成一個網址，在這裡我們將抓的順序設定成照時間排序而非照熱門排序，所以用false
+mainurl <- paste0(dcardurl,board,'/posts?popular=false')
+
+
+# 抽出json，把他存入resdata這個data.frame裡面
+resdata <- fromJSON(content(GET(mainurl), "text"))
+
+# 看看前幾筆的Dcard幻想文，檢查我們是否有抓到東西
+# 因為東西實在是太多了，我們就先看前兩個Column就好，下面亦同
+head(resdata[,1:2])
+
+# 還記得在上面分析小秘密的時候，我們提到before=id代表他讀取到這篇文章之前的文章
+# 所以為了讓我們繼續往下抓，我們要知道我們目前抓到的最後一篇文章id，然後把他設為before=id，才能繼續抓更早的文章
+tail(resdata[,1:2])
+
+
+# 假設我們要抓150篇文章
+n <- 150
+
+# 因為我們不去改limit的值，所以他預設會每次抓30篇回來，我們把要抓的文章/30便是我們要抓的次數
+# 還要再減一，因為我們一開始就先抓了前30筆
+# 也可以不館前面我們抓了什麼，從頭開始抓就不用減一，但我比較喜歡這麼寫
+page <- (150/30)-1
+
+# 寫一個loop，重複做page次
+for(i in 1:page){
+  # 從「目前抓到的最後一篇文章id」往前抓30篇 
+  url <- paste0(mainurl,"&before=",end)
+  
+  # 測試時可以把url印出來檢查有沒有抓對
+  # print(url)
+  
+  # 把抓到存入暫存的tmpres，這只是暫存
+  tmpres <- fromJSON(content(GET(url), "text"))
+  
+  # 從tmpres裡更新「最後一篇文章的id」
+  end <- tmpres$id[length(tmpres$id)]
+  
+  # 然後把我們新抓到的tmpres和之前已經有的resdata合併
+  resdata <- bind_rows(resdata,tmpres)
+}
+
+
+

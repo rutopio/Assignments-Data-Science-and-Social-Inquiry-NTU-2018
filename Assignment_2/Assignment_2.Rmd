@@ -130,7 +130,7 @@ df$region <- substr(df$發生.現.地點, 4, 5)
 
 ```{r}
 res <- tapply(df$編號, list(df$time, df$region), length, default = 0)
-mosaicplot(res, main = "台北市竊盜率（以橫軸為地點，縱軸為時間）", xlab = "時間", ylab = "地點")
+mosaicplot(res, main = "台北市竊盜率（以橫軸為時間，縱軸為地點）", xlab = "時間", ylab = "地點")
 ```
 
 > After (swap the time and region)
