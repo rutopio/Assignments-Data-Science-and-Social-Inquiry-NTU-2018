@@ -29,9 +29,7 @@ warnings.filterwarnings('ignore')
 # pd.options.display.max_rows = 999
 # pd.options.display.max_columns = 999
 
-
 # 參數設定
-
 #ma_short_period = 4
 #ma_long_period  = 56
 ma_short_period = 5
@@ -50,8 +48,8 @@ train_data_account_percent = 0.9
 
 param_cv_1 = {
                 #'n_estimators': range(100),
-                #'n_estimators': [1,10,20,30,40,50,60,70,80,90,100],
-                'n_estimators': [1,10,100],
+                'n_estimators': [1,10,20,30,40,50,60,70,80,90,100],
+                #'n_estimators': [1,10,100],
                 'max_depth': [4,5,6],
                 'subsample': [0.8],
                 'learning_rate':[0.1],
@@ -60,7 +58,6 @@ param_cv_1 = {
                 'gamma':[0.1,0.2],
                 'min_child_weight':[1]
             }
-
 
 # 讀取csv
 filename = sys.argv[1]
@@ -83,7 +80,6 @@ df = df.drop(['Volume'],axis=1)
 #print(df.tail())
 
 # 計算MA
-
 #df['sma_short'] = np.round(df['Adj Close'].rolling(window=5).mean(), 2)
 #df['sma_long'] = np.round(df['Adj Close'].rolling(window=15).mean(), 2)
 #df['sma_short'] = talib.MA(df['Adj Close'], timeperiod = 5, matype = 0)
@@ -101,8 +97,8 @@ df['sma_long'] = talib.MA(df['Adj Close'], timeperiod = ma_long_period, matype =
 # 圖
 #df[['Adj Close', 'sma_short', 'sma_long']][-50:-30].plot(grid=True, figsize=(20, 10),linewidth=3)
 #plt.show()
-
 #print(df[-50:-30])
+
 # 計算兩者之差
 df['diff'] = df['sma_short'] - df['sma_long']
  
@@ -150,7 +146,6 @@ print("Golden Cross 黃金交叉總共有:",df['golden_cross'].sum(),"次")
 print("Death Cross 死亡交叉總共有:",df['death_cross'].sum(),"次\n")
 #print(df[0:5])
 #print(df[25:34])
-
 #print(df.tail())
 
 # 找特徵
@@ -185,7 +180,7 @@ df['profit'] = df['profit_2'] - df['Adj Close']
 df.loc[df['profit'] > 0.00, 'result'] = 1 # hold好（等20分再買還是賺）
 df.loc[df['profit'] <= 0.00, 'result'] = 0 # hold不好 （等20分再買會陪）
 # print(df.head())
-#print(df.tail())
+# print(df.tail())
 
 # 真 黃金交叉
 df_golden = df[df['golden_cross'] == 1]

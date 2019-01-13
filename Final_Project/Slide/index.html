@@ -5,25 +5,18 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<!-- Font -->		
-
 		<style>
 				@font-face{ @font-face{
 					font-family: 'Noto Serif CJK TC';
 					src : url('../fonts/NotoSerifCJKtc-Regular.otf');
 				  }
+				}
 		</style>
-		
 
 		<title>DSSI Final Project Presentation</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
-
-		<!--D3.js css-->
-    	<script src='https://d3js.org/d3.v5.min.js' charset='utf-8'></script>
-
-		<!-- Animate css-->
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -41,12 +34,12 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-					<h1>黃金、死亡與騙局</h1>
+					<h1>黃金、死亡交叉與騙局</h1>
 					<p>Scam with Golden Crossing and Death Crossing</p>
 					<!--宇智波騙你-->
 					<hr>
-					<p><small>DSSI，2019 Jan，Final Project Presentation</small></p>
-					<!--By Ho ChingRu@chingru.me-->
+					<p><small>Data Science and Social Inquiry，2019 Jan，Final Project Presentation</small></p>
+					<!--By ChingRu@chingru.me-->
 				</section>
 
 				<section>
@@ -62,7 +55,7 @@
 						<h1>投資分析的三大主流</h1>
 						<hr>
 						<li align=left><font color=#e5c07b>基本面</font>：分析該物件的內在價值（財報、產業動向）</li>
-						<li align=left><font color=#e5c07b>技術面</font>：從過去看未來（Ｋ線圖、技術指標、深度學習）</li>
+						<li align=left><font color=#e5c07b>技術面</font>：從過去看未來（Ｋ線圖、技術指標、機器學習）</li>
 						<li align=left><font color=#e5c07b>籌碼面</font>：或稱新聞面、消息面，指三大法人、大戶的動向以及內線</li>
 					</section>
 
@@ -94,18 +87,18 @@
 								"enable_publishing": false,
 								"allow_symbol_change": true,
 								"container_id": "tradingview_96831"
-							}
+								}
 								);
 								</script>
 							</div>
 							<!-- TradingView Widget END -->
 					</section>
+
 <!--尷尬ㄌ chart.js　會跟 katex,js 衝突，只能選一個= =
 					<section>
 						<h4>各種 MA 的算法</h4>
 						<p>以下算式可以得到第$n$筆時的「值」，其中$p_i$代表第$i$筆的價格</p>					
 						<hr>
-						
 						<p align=left>$$SMA_n = \frac{p_n+p_{n-1}+...+p_2+p_1}{n}$$</p>
 						<p align=left>$$WMA_n = \frac{np_n+(n-1)p_{n-1}+...+2p_{2}+p_{1}}{n+(n-1)+...+2+1}$$</p>							
 						<p align=left>$$EMA_n = \alpha p_n+(1-\alpha)EMA_{n-1}(Recurrence)$$</p>											
@@ -118,6 +111,7 @@
 						<h3 style="text-transform:capitalize;">簡單移動平均（Simple Moving Average）</h3>
 						<hr>
 						<img src="./asset/sma.png" width="50%">
+						<!--<p align=left>$$SMA_n = \frac{p_n+p_{n-1}+...+p_2+p_1}{n}$$</p>-->
 						<hr>
 						<p>e.g. SMA(10)，代表過去十筆價格相加除十，即這十筆價格的平均值</p>
 					</section>
@@ -133,16 +127,16 @@
 					<section>
 						<h3>對 MA 的線圖的「交叉」而言</h3>
 						<hr>
-						<li>黃金交叉：當短期均線由下往上突破長期均線，</li>
+						<li>黃金交叉：當短期均線<font color=#e5c07b>由下往上</font>突破長期均線，</li>
 						<p>表示<font color=#e5c07b>短期多方較強，持續看多，是買入訊號</font>。</p>
 						<br>
-						<li>死亡交叉：當短期均線由上往下跌破長期均線，</li>
+						<li>死亡交叉：當短期均線<font color=#e5c07b>由上往下</font>跌破長期均線，</li>
 						<p>表示<font color=#e5c07b>短期空軍較強，持續看空，是賣出訊號</font>。</p>
 					</section>
 
 					<section>
 						<h3>但是「只」看線圖是會被「誘殺」的</h3>
-						<h3>也就是俗稱的「騙線」</h3>
+						<h3 class="fragment fade-up">也就是俗稱的「騙線」</h3>
 					</section>
 
 					<section>
@@ -152,7 +146,7 @@
 
 					<section>
 						<p>大戶們利用散戶迷信技術分析和指標的心理，故意哄抬或出貨，</p>
-						<p>形成「人造（而非市場造出）」的線型，引誘散戶買進或賣出。</p>
+						<p>形成<font color=#e5c07b>「人造（而非市場造出）」</font>的線型，引誘散戶買進或賣出。</p>
 						<br>
 						<p>在實務上，像這樣的「騙線」可以出現在不同的技術指標裡，</p>
 						<p>而要避免落入騙線陷阱的方法，最簡單就是觀察量，或是別的指標。</p>
@@ -160,7 +154,7 @@
 
 					<section>
 						<h1>？</h1>
-						<p>那有沒有辦法透過只從「歷史價格」偵測未來可能的「騙局」呢</p>
+						<p class="fragment fade-up">那有沒有辦法透過<font color=#e5c07b>只從「歷史價格」</font>預測未來可能的「騙局」呢</p>
 					</section>
 				</section>
 
@@ -179,10 +173,10 @@
 					<section>
 						<p align=left>１．蒐集我們要預測的標的的原始價格資訊</p>
 						<p align=left>２．從原始資訊中算出何時會出現黃金與死亡交叉</p>
-						<p align=left>３．定義「在怎樣的情況」下，我可以說這條是「騙線」</p>
-						<p align=left>４．想出怎麼去「偵測、影響騙線形成（特徵值）」的方法</p>
+						<p align=left>３．定義<font color=#e5c07b>「在怎樣的情況」</font>下，我可以說這條是「騙線」</p>
+						<p align=left>４．想出怎麼去<font color=#e5c07b>「偵測、影響騙線形成（特徵值）」</font>的方法</p>
 						<p align=left>５．把４的方法和３的定義一起丟入模型中跑看看我們能預測多少</p>
-						<p align=left>６．得到結論：我們真的可以「只從歷史價格」找出騙線嗎？</p>
+						<p align=left>６．得到結論：我們真的可以<font color=#e5c07b>「只從歷史價格」</font>找出騙線嗎？</p>
 						<p align=left>　　又，哪種標的可以這麼「做」，哪種又無法？</p>
 					</section>
 
@@ -191,34 +185,35 @@
 						<hr>
 						<p><a href = "https://finance.yahoo.com/">Yahoo Finance</a>：https://finance.yahoo.com/</p>
 						<p><a href = "http://www.taifex.com.tw/cht/3/dlFutPrevious30DaysSalesData">台灣期貨交易所</a>：http://www.taifex.com.tw/</p>
-						<p><a href = "https://coinmetrics.io/data-downloads/">Coin Metrics</a>：https://coinmetrics.io/</p>
+						<!--<p><a href = "https://coinmetrics.io/data-downloads/">Coin Metrics</a>：https://coinmetrics.io/</p>-->
 					</section>
 
 					<section>
 						<h3>２．從原始資訊中算出何時會出現黃金與死亡交叉</h3>
 						<hr>
 						<p>解釋有點複雜，有機會的話看 code 比較快</p>
-						<p>用到 np.sign() 函數</p>
+						<p>用 np.sign() 去看變號的情況，視為交叉</p>
 					</section>
 
 					<section>
 						<h3>３．定義「在怎樣的情況下，我可以說這條是騙線」</h3>
 						<hr>
-						<p align=left>其實方法很多，和別種技術指標、或是交易量一起分析是一種方法</>
-						<p align=left><del>但因為這樣 code 會很長要模組化比較好看很麻煩</del></p>
+						<p align=left>其實方法很多，和別種技術指標、或是交易量一起分析是一種方法。</>
+						<p align=left><del>但因為這樣 code 會很長要模組化比較好看所以很麻煩...</del></p>
+						<br>
 						<p align=left>設想如果這是騙線，當短 MA 穿越長 MA 時，<font color=#e5c07b>理應是買入訊號</font>，</p>
 						<p align=left>但其實是大戶為了吸引散戶「買」然後做空讓股價「跌落」。</p>
-						<p align=left>所以「在出現交叉」後的<font color=#e5c07b>兩次報價後，價格會比出現交叉時低</font>。</>
+						<p align=left class="fragment fade-up">所以「在出現交叉」後的<font color=#e5c07b>間隔幾次報價後，價格會比出現交叉時低</font>。</>
 					</section>
 
 					<section>
-						<h3>４．想出怎麼去「偵測、影響騙線形成（特徵值）」的方法</h3>
+						<h3>４．「偵測、影響騙線形成（特徵值）」的方法</h3>
 						<hr>
-						<p align=left>跟剛剛的問題一樣，這也有很多種方法。</p>
+						<p align=left>跟剛剛的問題一樣，這也有很多種方法，</p>
 						<p align=left>在現實生活中也有可能是大戶放出消息這種非價格性的變因。</p>
 						<br>
 						<p align=left>但在這裡，我們只能從「歷史價格」去「預測」騙線的出現。</p>
-						<p align=left>所以設想在出現「交叉」之前，線的變動受到人為操控或是影響，</p>
+						<p align=left>所以設想<font color=#e5c07b>在出現「交叉」之前，線的變動受到人為操控或是影響</font>，</p>
 						<p align=left>所以和「出現交叉時」的「歷史價格」有關係。</p>
 						<br>
 						<p align=left>取交叉前一次、兩次、三次、四次、五次報價之差當作代表。</p>
@@ -228,8 +223,9 @@
 						<h4>５．把４的方法和３的定義一起丟入模型中跑看看我們能預測多少<h4>
 						<hr>
 						<p align=left>已經知道<font color=#e5c07b>所有過去的歷史價格</font>了，我們可以貼標籤去做監督學習。</p>
-						<p style="text-transform:capitalize;"  align=left>如果只是單純透過某個特徵，可以用 Logistic Reg. 去分類。</p>
-						<p align=left>但這裡因為我們在４用了前五次的報價之差當作特徵值，</p>
+						<p style="text-transform:capitalize;"  align=left>如果只透過單一特徵（feature），可以用 Logistic Reg. 去分類。</p>
+						<br>
+						<p align=left>但這裡因為我們在剛剛提到用前五次的報價之差當作「特徵」值，</p>
 						<p align=left>所以<font color=#e5c07b>種樹</font>來建構決策邊界（即「是不是騙局」）比較好。</p>
 						<br>
 						<p align=left style="text-transform:lowercase;">在這裡，使用 xgboost 種樹。</p>
@@ -240,50 +236,53 @@
 					<section>
 						<h1>模型結論</h1>
 						<hr>
+						<p>投資一定有風險，股票投資有賺有賠，申購前應詳閱公開說明書。</p>
 						<p>▼</p>
 					</section>
 
 					<section>
 						<h3>模型說明</h3>
 						<hr>
-						<p>本模型為「能否透過<font color=#e5c07b>歷史價格</font>資料的學習，預測騙線的發生」</p>
+						<p>本模型為「能否<font color=#e5c07b>只</font>透過<font color=#e5c07b>歷史價格</font>資料的學習，<font color=#e5c07b>預測騙線的發生</font>」。</p>
 						<br>
 						<p>在模型的最後，我們會得到一個 Accuracy Score。</p>
 						<p>介於零和一之間。</p>
 						<br>
-						<p>數字愈大代表「越能預測」，數字愈少代表「越難預測」</p>
-						
+						<p class="fragment fade-up">數字愈大代表模型「越能預測」，數字愈少代表「越難預測」。</p>
 					</section>
 
 					<section>
 						<canvas data-chart='horizontalBar'>
-							標的代號,^TAIFEX：Taiwan Future Exchange，台灣綜合期貨指數,^TWII：TSEC weighted index，台灣加權股價指數,^GSPC：S&P 500，標準普爾 500 指數,^IXIC：INDEXNASDAQ，那斯達克綜合指數, ^DJI：Dow Jones Industrial Average，道瓊工業平均指數, ^RUT：Russell 2000，羅素 2000 指數, ^N225：INDEXNIKKEI，日經平均指數,^HSI：INDEXHANGSENG，香港恒生指數,平均值
-							預測率（accuracy_score）, 0.5956  ,0.6433, 0.5679 , 0.68   , 0.6921, 0.6142 , 0.5862, 0.5978,0.6221375
+							標的代號,^TAIFEX：Taiwan Future Exchange，台灣綜合期貨指數,^TWII：TSEC weighted index，台灣加權股價指數,^GSPC：S&P 500，標準普爾 500 指數,^IXIC：INDEXNASDAQ，那斯達克綜合指數, ^DJI：Dow Jones Industrial Average，道瓊工業平均指數, ^RUT：Russell 2000，羅素 2000 指數, ^N225：INDEXNIKKEI，日經平均指數,^HSI：INDEXHANGSENG，香港恒生指數,綜合加權指數的模型預測準確之平均值
+							綜合加權指數之預測率（accuracy_score）, 0.5956  ,0.6433, 0.5679 , 0.68   , 0.6921, 0.6142 , 0.5862, 0.5978,0.6221375
 						</canvas>
 						<div><small><small>註：計到小數點下四位，部份模型使用了不同的參數。除了台指期使用分 K 棒之外，資料來源原則皆為 Yahoo Finance，原則以歷年日 K 棒的 Adj Closed 計算之。</small></div></small>
-					</section>
-					<section>
-						<canvas data-chart='horizontalBar'>
-							標的代號,GOOG：Alphabet Inc.,AAPL：Apple Inc ,AMD：Advanced Micro Devices Inc.,AMZN：Amazon.com Inc.,INTC：Intel Corporation,MSFT：Microsoft Corporation,TSM：Taiwan Semiconductor Manufacturing Company Limited ,SBUX：Starbucks Corporation,JNJ：Johnson and Johnson,IBM：International Business Machines Corporation,SPG：Simon Property Group,MMM：3M Company,KO：The Coca-Cola Company,NKE：NIKE Inc.,平均值
-							預測率（accuracy_score）,0.6538,0.5454 ,0.3658 ,0.4736 ,0.4444 ,0.4594 ,0.4285 ,0.5666 ,0.3333 ,0.5606 ,0.5862 ,0.5084 ,0.5 ,0.5238,0.49641428571
-						</canvas>
-						<div><small><small>註：計到小數點下四位，部份模型使用了不同的參數。資料來源原則皆為 Yahoo Finance，原則以歷年日 K 棒的 Adj Closed 計算之。</small></div></small>
 					</section>
 
 					<section>
 						<h3>對綜合加權指數而言：</h3>
 						<hr>
-						<li align=left><font color=#e5c07b>平均值：0.6221375</font>，顯著大於一半</li>
+						<li align=left><font color=#e5c07b>平均值：0.6221375</font>，明顯過半。</li>
 						<br>
 						<p align=left>因為是「大盤」的加權指數，要控制大盤指數必須控制權值股，</p>
 						<p align=left>所以大戶要操弄「整體市場」的成本極大，</p>
 						<p align=left><font color=#e5c07b>很難在很短的時間內做出 P&D （Pump and Dump）的現象，</font></p>
-						<p align=left>使得「製造」線形的過程相對個股而言較久，所以有機會用過去的資料預測的出來。</p>
+						<p align=left>使得「製造」線形的過程相對個股而言還要<font color=#e5c07b>來得長</font>，</p>
+						<p align=left>所以有機會用過去的資料預測的出來。</p>
 					</section>
+
+					<section>
+						<canvas data-chart='horizontalBar'>
+							標的代號,GOOG：Alphabet Inc.,AAPL：Apple Inc ,AMD：Advanced Micro Devices Inc.,AMZN：Amazon.com Inc.,INTC：Intel Corporation,MSFT：Microsoft Corporation,TSM：Taiwan Semiconductor Manufacturing Company Limited ,SBUX：Starbucks Corporation,JNJ：Johnson and Johnson,IBM：International Business Machines Corporation,SPG：Simon Property Group,MMM：3M Company,KO：The Coca-Cola Company,NKE：NIKE Inc.,應用在單一個股的模型預測準確之平均值
+							單一個個股之預測率（accuracy_score）,0.6538,0.5454 ,0.3658 ,0.4736 ,0.4444 ,0.4594 ,0.4285 ,0.5666 ,0.3333 ,0.5606 ,0.5862 ,0.5084 ,0.5 ,0.5238,0.49641428571
+						</canvas>
+						<div><small><small>註：計到小數點下四位，部份模型使用了不同的參數。資料來源原則皆為 Yahoo Finance，原則以歷年日 K 棒的 Adj Closed 計算之。</small></div></small>
+					</section>
+
 					<section>
 						<h3>對單一個個股而言：</h3>
 						<hr>
-						<li align=left><font color=#e5c07b>平均值：0.49641428</font>，跟丟硬幣一樣的機率</li>
+						<li align=left><font color=#e5c07b>平均值：0.49641428</font>，跟丟硬幣一樣，所以很難說可以預測...</li>
 						<br>
 						<div align=left>相較於大盤，操縱各股所需的成本較少，</div>
 						<div align=left><font color=#e5c07b>可以在短時間內迅速拉抬價格、或是做空，來製造「交叉」假象，</font></div>
@@ -295,18 +294,18 @@
 					<section>
 						<canvas data-chart='horizontalBar'>
 								標的代號,BTC-USD,ETH-USD,ETC-USD,IOTA-USD,BNB-USD,XLM-USD,XRP-USD,DOGE-USD
-								預測率（accuracy_score）,0.5454,0.3333,0.6666,0.5,0.8933,0.6666,0.3333,0.26
+								Cryptocurrency之預測率（accuracy_score）,0.5454,0.3333,0.6666,0.5,0.8933,0.6666,0.3333,0.26
 						</canvas>
 						<div><small><small>註：部份模型使用了不同的參數。資料來源原則皆為 Yahoo Finance，原則以歷年日 K 棒的 Adj Closed 計算之。</small></div></small>
 					</section>
 
 					<section>
-						<h3>對 CryptoCurrency 市場而言：</h3>
+						<h3>對 Cryptocurrency 市場而言：</h3>
 						<hr>
 						<li align=left>各自獨立。</li>
 						<br>
 						<div align=left>很遺憾的，當今 Cryptocurrency 市場本質就是誰有錢就炒幣，</div>
-						<div align=left>所以別想在這個一天振盪 20% 的市場預測了，別人喊上車就上車。</div>
+						<div align=left>所以<font color=#e5c07b>別想在這個一天振盪 20% 的市場作預測</font>，別人喊上車就上車。</div>
 						<div align=left>Cryptocurrency 市場的 P&D 實在太多了，</div>
 						<div align=left>大戶的籌碼可以控制整體在外流通的半數以上，想怎麼玩就怎麼玩，</div>
 						<div align=left>假新聞也常常以訛傳訛的影響市場和未來看法。</div>
@@ -323,30 +322,36 @@
 					<section>
 						<h3>所以這個能幹嘛？</h3>
 						<hr>
-						<p>證明「技術指標」對大盤的預測效果比對個股還要好。</p>
-						<p>但儘管如此，這個模型預測成功率也約略大於 60% 而已。</p>
+						<p><font color=#e5c07b>證明「技術指標」對大盤的預測效果比對個股還要好</font>。</p>
+						<p>但儘管如此，這個模型是在預測能不能識破騙線，</p>
+						<p>而不是預測「能不能賺錢」，謝謝。</p>
+						<br>
+						<p>如果真的有模型可以穩穩的獲利我自己操作養老就好惹啊^^</p>
 					</section>
 
 					<section>
 						<h3>那用技術分析買標的，可以發大財嗎？</h3>
 						<hr>
-						<p>我個人認為技術分析只能提供一個讓你「合理下注」的時間點，</p>
+						<p>我個人認為技術分析<font color=#e5c07b>只能提供一個讓你「合理下注」的時間點</font>，</p>
 						<p>就像這個模型只是預測「交叉時是不是騙線？」</p>
 						<p>而非讓人預測未來的價格走向一定如何。</p>
 						<br>
-						<p>但當愈多人相信同一套「工具」，市場「或許」就會自我實現</p>
+						<p>但當愈多人相信同一套「工具」，市場「或許」就會自我實現。</p>
 					</section>
 				</section>
 
 				<section>
 					<section>
 						<h1>FAQ</h1>
+						<p>不知道這樣講十分鐘了沒 = =</p>
+						<p>我先自首我來不及把所有的 Document 看完<p>
+						<p>所以太理論的我也不會解釋 QQ</p>
 					</section>
 				</section>
 	
 				<section>
 					<section>
-						<p>Appendix</p>
+						<p>Appendix：</p>
 						<h1>實作（１）</h1>
 						<hr>
 						<p>先整理出我們要的東西</p>
@@ -357,7 +362,7 @@
 						<h5>Information</h5>
 						<hr>
 						<p>Using Language Version & Platform: </p>
-						<p>Python 3.6.7 @ Linux Mint 19</p>
+						<p>Python 3.6.7 @ Linux Kernel 4.15.0-42-generic</p>
 						<br>
 						<p>Using Library Version: </p>
 						<p>pandas 0.23.4、numpy 1.15.4</p>
@@ -374,10 +379,10 @@ import numpy as np
 import xgboost as xgb
 import talib
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import confusion_matrix 
-from sklearn.metrics import accuracy_score, precision_score, recall_score
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
 
-original_data = pd.read_csv(sys.argv[1],index_col='Date') # 從command line讀取csv
+filename = sys.argv[1]
+original_data = pd.read_csv(filename, index_col = 'Date')
 df = original_data.copy() # 把csv讀成一個dataframe
 df.index = pd.to_datetime(df.index) # 把時間當成 index
 						</code></pre>
@@ -386,7 +391,7 @@ df.index = pd.to_datetime(df.index) # 把時間當成 index
 					<section>
 						<h5>檢查這個原始資料有什麼東西可以用</h5>
 						<pre class="py"><code>
-df = df.dropna(how='any') # 刪掉有 NaN 的任何一 row ，不然算指標會有問題						
+df = df.dropna(how='any') # 其實插值比較好，但我很懶= =，這裡直接刪掉有 NaN 的任何一 row 
 print(df.tail()) # 印出來看看有什麼
 						</code></pre>
 						<div align=left><small>終端輸出：</small></div>
@@ -398,7 +403,6 @@ Date
 2019-01-04  2474.330078  2538.070068  2474.330078  2531.939941  2531.939941  4213410000
 2019-01-07  2535.610107  2566.159912  2524.560059  2549.689941  2549.689941  4104710000
 2019-01-08  2568.110107  2579.820068  2547.560059  2574.409912  2574.409912  4083030000
-								
 						</code></pre>
 					</section>
 
@@ -414,8 +418,8 @@ plt.show()
 					<section>
 						<h5>導入歷史資料，算出長 MA 跟短 MA</h5>
 						<pre class="py"><code>				
-df = df[['Volume','Adj Close']]
-df = df.drop(['Volume'],axis=1) # 在這裡，為了簡化模型訓練的過程，先用收盤價做討論就好
+df = df.drop(['Open','High','Low','Close','Volume'],axis=1) 
+# 在這裡，為了簡化模型訓練的過程，先用 Adj Close 做討論就好
 
 ma_short_period = # 設定短線日期
 ma_long_period  = # 設定長線日期
@@ -433,7 +437,7 @@ df['sma_long'] = talib.MA(df['Adj Close'], timeperiod = ma_long_period, matype =
 					<section>
 							<h5>畫粗乃</h5>
 							<pre class="py"><code>
-df[['Adj Close', 'sma_short', 'sma_long']][-100:-1].plot(grid=True, figsize=(20, 10)) 
+df[['Adj Close', 'sma_short', 'sma_long']][-100:-1].plot(grid = True, figsize = (20, 10)) 
 # 畫最新的 50 天出來
 plt.show()
 							</code></pre>
@@ -468,12 +472,12 @@ asign = np.sign(df['diff']) # 大於 0 時回傳 +1，小於 0 時回傳-1
 
 # 而死亡交叉（短線從長線上面跌落到長線）就是在 +1 到 -1 之時
 # 也就是 +1 - (-1) = 2 時發生
-cross_signal = ((np.roll(asign, 1) - asign) == 2).astype(int) 
+death_signal = ((np.roll(asign, 1) - asign) == 2).astype(int) 
 # 一樣會回傳 T(1) 或 F(0)
 
-df['death_cross'] = cross_signal # 把結果存到 death_cross 裡面
+df['death_cross'] = death_signal # 把結果存到 death_cross 裡面
 
-df['death_cross'][df['death_cross'] == 1] = -1 
+df['death_cross'][df['death_cross'] == 1] = (-1)
 # 為了和黃金交叉有分別，把本來的 1 改成 -1
 # 另外其實可以把交叉都存在同一個資料結構裡面就是了，因為不可能同時黃金交叉又死亡交叉
 						</code></pre>
@@ -485,7 +489,8 @@ df['death_cross'][df['death_cross'] == 1] = -1
 print("Golden Cross 黃金交叉總共有:",df['golden_cross'].sum(),"次")
 print("Death Cross 死亡交叉總共有:",df['death_cross'].sum(),"次")
 # 理論上要一樣多或是只差一，因為穿越上去要再穿越下來，才能再穿越上去
-print(df[ma_long_period-5:ma_long_period+5]) 
+
+print(df[(ma_long_period-5):(ma_long_period+5)]) 
 # 檢查是否到第 ma_long_period 筆資料時（array[ma_long_period-1]）才出現 sma_long
 						</code></pre>
 						<div align=left><small>終端輸出：</small></div>
@@ -510,6 +515,7 @@ Date
 
 				<section>
 					<section>
+						<p>Appendix：</p>
 						<h1>實作（２）</h1>
 						<hr>
 						<p>開始用 xgboost 找特徵（feature）</p>
@@ -544,11 +550,7 @@ df['Diff_Pre_1'] = df['diff'].shift(2)
 df['Diff_Pre_1'] = df['diff'].shift(3)
 df['Diff_Pre_1'] = df['diff'].shift(4)
 df['Diff_Pre_1'] = df['diff'].shift(5)
-						</code></pre>
-					</section>
 
-					<section>
-						<pre class="py"><code>
 # 計算出位移之間的 diff
 df['Close_Pre_1'] = df['Adj close'] - df['Close_Pre_1']
 df['Close_Pre_2'] = df['Adj close'] - df['Close_Pre_2']
@@ -566,11 +568,11 @@ df['Diff_Pre_5'] = df['diff'] - df['Diff_Pre_5']
 
 					<section>
 						<h3>考慮什麼叫做「被騙」？</h3>
-						<p>如何定義被騙是一件很困難的事情，可以有很多種定義方法。</p>
-						<p>這裡用「延遲」交易策略看會不會賺錢的想法去定義被騙</p>
+						<hr>
+						<p>如何定義被騙是一件很困難的事情...<del>跟定義遊戲一樣難</del></p>
+						<p><small>這裡用「延遲」交易策略看會不會賺錢的想法去定義被騙</small></p>
 						<pre class="py"><code>
 # 在看到「買賣指標」之後，再等幾次「報價」再買賣
-
 delay_period = 2 # 這裡，設成延遲兩次「再買」，看會不會賺錢
 df['Price_delay'] = df['Adj Close'].shift(-delay_period)
 df['Profit'] = df['Price_delay'] - df['Adj Close']
@@ -601,7 +603,6 @@ Date                                                                      ...
 2018-11-30  2760.169922  2719.475977  2716.939657  22.369873  16.379883   ...    45.763330  68.347689  68.923014  59.481665     0.0
 
 [5 rows x 14 columns]
-								
 						</code></pre>
 					</section>
 
@@ -652,7 +653,7 @@ test_set = data_array[np.arange(test_start, test_end), :] # 測試集
 x_train = train_set[:, :set_property-1] 
 y_train = train_set[:, -1] 
 x_test = test_set[:, :set_property-1]
-y_test = test_set[:, -1:]
+y_test = test_set[:, -1]
 
 # 考慮遇到 nan 時的狀態，不過基本上一個好的資料來源不會有原始資料是 null 的狀態
 # 畢竟不會有開市卻沒有價格的狀態，而且一開始我們就刪去了有 null 的 row 就是
@@ -664,9 +665,9 @@ y_test = np.where(np.isnan(y_test), 0, y_test)
 					<section>
 						<h5>把資料印出來看看有什麼</h5>
 						<pre class="py"><code>
-print(x_train[0],'／',y_train[0]) # 印出第一筆就好
-print('y_train.sum() =',y_train.sum()) # 因為每筆都是 1 ，所以 .sum() 相當於回傳有幾筆
-print('y_test.sum() =',y_test.sum())
+print(x_train[0], '／', y_train[0]) # 印出第一筆就好
+print('y_train.sum() =', y_train.sum()) # 因為每筆都是 1 ，所以 .sum() 相當於回傳有幾筆
+print('y_test.sum() =', y_test.sum())
 						</code></pre>
 						<div align=left><small>終端輸出：</small></div>
 						<pre class="py"><code>
@@ -684,6 +685,7 @@ y_test.sum() = 22.0
 
 				<section>
 					<section>
+						<p>Appendix：</p>
 						<h1>實作（３）</h1>
 						<hr>
 						<p>xgboost 的 hyperparameter 調整</p>
@@ -698,7 +700,7 @@ y_test.sum() = 22.0
 param_range_setting = {
 	'booster': 'gbtree' # 種一棵樹
 	'n_estimators': 我問天, # 樹有幾棵
-	'max_depth': 我問天, # 樹有多深
+	'max_depth': 我問天, # 樹有多深，太深會 overfit 也不好
 	'subsample': 我問天, # 控制種一顆樹需要多少樣本，避免 overfit
 	'learning_rate':我問天, 
 	'objective': ['binary:logistic'], # 以二元分配的模型為目標
@@ -716,16 +718,16 @@ train_model = xgb.XGBClassifier() # 創建模型
 # GridSearchCV 會自動用暴力方法在設定的參數範圍內找出一個最佳的參數
 # 搜尋所需的時間正比於你給定的參數
 # 其中，param_grid 代表要找出最佳解的參數集合；cv代表交叉驗證的份數
-grid_set = GridSearchCV(trian_model, param_grid = param_range_setting, cv=5, 
+grid_set = GridSearchCV(trian_model, param_grid = param_range_setting, cv=5,
 	scoring='accuracy', verbose=1)
 grid_set.fit(x_train, y_train)
 print(grid_set.fit(x_train, y_train)) # 訓練算法
 						</code></pre>
 						<div align=left><small>終端輸出：</small></div>
 						<pre class="py"><code>
-Fitting 5 folds for each of 12 candidates, totalling 60 fits
+Fitting 5 folds for each of 66 candidates, totalling 330 fits
 [Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
-[Parallel(n_jobs=1)]: Done  60 out of  60 | elapsed:    1.1s finished																
+[Parallel(n_jobs=1)]: Done 330 out of 330 | elapsed:  1.3min finished								
 						</code></pre>
 					</section>
 
@@ -736,11 +738,11 @@ Fitting 5 folds for each of 12 candidates, totalling 60 fits
 print('輸出最佳參數：')
 print(grid_set.best_params_)
 						</code></pre>
-						<div align=left><small>終端輸出：</small></div>
+						<div align=left><small>終端輸出：（這個參數只對當下樣本有利，不一定能 match 所有模型）</small></div>
 						<pre class="py"><code>
 輸出最佳參數：
 {'gamma': 0.1, 'learning_rate': 0.1, 'max_depth': 6, 'min_child_weight': 1, 
-'n_estimators': 1, 'objective': 'binary:logistic', 'seed': 42, 'subsample': 0.8} 								
+'n_estimators': 1, 'objective': 'binary:logistic', 'seed': 42, 'subsample': 0.8}
 						</code></pre>
 					</section>
 
@@ -748,9 +750,9 @@ print(grid_set.best_params_)
 						<h5>輸出模型！</h5>
 						<pre class="py"><code>
 print('訓練出的模型參數：')
-print(train_model.fit(x_train, y_train)) ＃　訓練出模型！						 						
+print(train_model.fit(x_train, y_train)) ＃　訓練出模型！
 						</code></pre>
-						<div align=left><small>終端輸出：</small></div>
+						<div align=left><small>終端輸出：（這個參數只對當下樣本有利，不一定能 match 所有模型）</small></div>
 						<pre class="py"><code>
 訓練出的模型參數：
 XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
@@ -759,7 +761,6 @@ XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
        n_jobs=1, nthread=None, objective='binary:logistic', random_state=0,
        reg_alpha=0, reg_lambda=1, scale_pos_weight=1, seed=None,
        silent=True, subsample=1) 
-						 
 						</code></pre>
 					</section>
 
@@ -771,7 +772,7 @@ test_pred = train_model.predict(x_test)
 
 # 輸出我們最關心的 confusion_matrix
 print('Confusion_Matrix：')
-print(confusion_matrix(y_test, test_pred, labels=[1, 0]))	
+print(confusion_matrix(y_test, test_pred, labels = [1, 0]))	
 						</code></pre>
 						<div align=left><small>終端輸出：</small></div>
 						<pre class="py"><code>
@@ -783,11 +784,11 @@ Confusion_Matrix：
 
 					<section>
 						<pre class="py"><code>
-print('合格率：',accuracy_score(y_test, test_pred))
+print('合格率：', accuracy_score(y_test, test_pred))
 						</code></pre>
 						<div align=left><small>終端輸出：</small></div>
 						<pre class="py"><code>
-合格率：0.5966
+合格率：0.5956006768189509 
 						</pre></code>
 						<small><div align=left>這個準確率代表當我們用前面的特徵（即延遲購買）去回測單純的黃金交叉策略時，</div></small>
 						<small><div align=left>這個預測的命中率（或者是成功預測到夠入時會賺的機率）是 59% 左右。</div></small>
@@ -796,7 +797,7 @@ print('合格率：',accuracy_score(y_test, test_pred))
 					<section>
 						<h5>最後看看每次交叉時，是騙線的機率有多大</h5>
 						<pre class="py"><code>
-# .predict_prob 可以得到每次的預測機率							
+# .predict_prob 可以得到每次的預測機率
 test_proba = train_model.predict_proba(x_test)
 print(test_proba)
 						</code></pre>
@@ -869,6 +870,9 @@ for i in zip(thresholds):
 							<img src="./asset/by-nc-nd.png">
 							<div><small> 姓名標示 ─ 非商業性 ─ 禁止改作 </small></div>
 							<div><small>Attribution - NonCommercial - NoDerivs</small></div>
+							<br>
+							<p style="font-size:60%">Model Source Code：<a href="https://github.com/rutw/DSSI_2018/blob/master/Final_Project/code/scam_cross.py">https://github.com/rutw/DSSI_2018/blob/master/Final_Project/code/scam_cross.py</a></p>
+							<p style="font-size:60%">Slide Source Code：<a href="https://github.com/rutw/DSSI_2018/tree/master/Final_Project/Slide">https://github.com/rutw/DSSI_2018/tree/master/Final_Project/Slide</a></p>
 						</section>
 				</section>
 			</div>
@@ -913,7 +917,6 @@ for i in zip(thresholds):
 					transitions: false,
 				},
 
-
 				toolbar: {
 					captureMenu: true,
 					fullscreen: true,
@@ -925,10 +928,7 @@ for i in zip(thresholds):
 					{ src: 'plugin/chart/Chart.min.js' },
 					{ src: 'plugin/chart/csv2chart.js' },
 					{ src: 'plugin/menu/menu.js',async: true },
-					
 					{ src: 'plugin/toolbar/toolbar.js',async: true },
-					{ src: 'https://d3js.org/d3.v5.min.js' },
-					{ src: 'plugin/reveald3/reveald3.js'},
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
