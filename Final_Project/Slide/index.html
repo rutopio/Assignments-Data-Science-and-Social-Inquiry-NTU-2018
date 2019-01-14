@@ -555,10 +555,10 @@ df['Close_Pre_4'] = df['Adj Close'].shift(4)
 df['Close_Pre_5'] = df['Adj Close'].shift(5)
 
 df['Diff_Pre_1'] = df['diff'].shift(1)
-df['Diff_Pre_1'] = df['diff'].shift(2)
-df['Diff_Pre_1'] = df['diff'].shift(3)
-df['Diff_Pre_1'] = df['diff'].shift(4)
-df['Diff_Pre_1'] = df['diff'].shift(5)
+df['Diff_Pre_2'] = df['diff'].shift(2)
+df['Diff_Pre_3'] = df['diff'].shift(3)
+df['Diff_Pre_4'] = df['diff'].shift(4)
+df['Diff_Pre_5'] = df['diff'].shift(5)
 
 # 計算出位移之間的 diff
 df['Close_Pre_1'] = df['Adj close'] - df['Close_Pre_1']
