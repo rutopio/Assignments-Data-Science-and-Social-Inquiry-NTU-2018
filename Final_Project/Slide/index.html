@@ -6,10 +6,9 @@
 
 		<!-- Font -->		
 		<style>
-				@font-face{ @font-face{
-					font-family: 'Noto Serif CJK TC';
-					src : url('../fonts/NotoSerifCJKtc-Regular.otf');
-				  }
+				@font-face{ 
+					font-family: Noto Serif CJK TC;
+					src : url('./font/NotoSerifCJKtc-Regular.otf');
 				}
 		</style>
 
@@ -62,8 +61,8 @@
 					<section>
 						<h2>其中，技術指標最常用的就是線圖</h2>
 						<hr>
-						<p>這裡使用最最最最最基本的<font color=#e5c07b>均線（MA，Moving Average）</font></p>
-						<p><small>以下示範使用 Simple Moving Average </small></p>
+						<p>這裡舉最最最最最基本的<font color=#e5c07b>均線（MA，Moving Average）</font>為例</p>
+						<p><small>以下示範使用 S&P 500 ETF（SPDR 標普 500 指數，代號：SPY） </small></p>
 					</section>
 
 					<section>
@@ -94,7 +93,7 @@
 							<!-- TradingView Widget END -->
 					</section>
 
-<!--尷尬ㄌ chart.js　會跟 katex,js 衝突，只能選一個= =
+<!--				尷尬ㄌ chart.js　會跟 katex.js 衝突，只能選一個= =
 					<section>
 						<h4>各種 MA 的算法</h4>
 						<p>以下算式可以得到第$n$筆時的「值」，其中$p_i$代表第$i$筆的價格</p>					
@@ -106,12 +105,12 @@
 						<p align=left>$$TEMA_n = 3EMA[p_n]-3EMA[EMA[p_n]]+EMA[EMA[EMA[p_n]]]$$</p>						
 					</section>
 -->
-					<section>
-						<h3>在這裡，我們用最最最最最簡單的</h3>
+					<section data-math>
+						<h3>在這裡，我們說明最最最最最簡單的</h3>
 						<h3 style="text-transform:capitalize;">簡單移動平均（Simple Moving Average）</h3>
 						<hr>
 						<img src="./asset/sma.png" width="50%">
-						<!--<p align=left>$$SMA_n = \frac{p_n+p_{n-1}+...+p_2+p_1}{n}$$</p>-->
+						<p style="font-size: 60%">$$SMA_n = \frac {p_{n}+p_{n-1}+...+p_{2}+p_{1}}{n}$$</p>
 						<hr>
 						<p>e.g. SMA(10)，代表過去十筆價格相加除十，即這十筆價格的平均值</p>
 					</section>
@@ -121,7 +120,7 @@
 						<hr>
 						<img src="./asset/image019.png" width='80%'>
 						<hr>
-						<div><small><a href=https://ck101.com/thread-3503420-1-1.html>Image Reference</a></small></div>
+						<div><small><small><a href=https://ck101.com/thread-3503420-1-1.html>Image Reference</a></small></small></div>
 					</section>
 
 					<section>
@@ -185,7 +184,7 @@
 						<hr>
 						<p><a href = "https://finance.yahoo.com/">Yahoo Finance</a>：https://finance.yahoo.com/</p>
 						<p><a href = "http://www.taifex.com.tw/cht/3/dlFutPrevious30DaysSalesData">台灣期貨交易所</a>：http://www.taifex.com.tw/</p>
-						<!--<p><a href = "https://coinmetrics.io/data-downloads/">Coin Metrics</a>：https://coinmetrics.io/</p>-->
+						<!--<p><a href = "https://coinmetrics.io/data-downloads/">Coin Metrics</a>：https://coinmetrics.io/</p> 結果BTC那些資料已經在Yahoo Finnce出現過了-->
 					</section>
 
 					<section>
@@ -249,11 +248,12 @@
 						<p>介於零和一之間。</p>
 						<br>
 						<p class="fragment fade-up">數字愈大代表模型「越能預測」，數字愈少代表「越難預測」。</p>
+						<p><small>資料時間時間：任一標的上市日～2018/01/11</small></p>
 					</section>
 
 					<section>
 						<canvas data-chart='horizontalBar'>
-							標的代號,^TAIFEX：Taiwan Future Exchange，台灣綜合期貨指數,^TWII：TSEC weighted index，台灣加權股價指數,^GSPC：S&P 500，標準普爾 500 指數,^IXIC：INDEXNASDAQ，那斯達克綜合指數, ^DJI：Dow Jones Industrial Average，道瓊工業平均指數, ^RUT：Russell 2000，羅素 2000 指數, ^N225：INDEXNIKKEI，日經平均指數,^HSI：INDEXHANGSENG，香港恒生指數,綜合加權指數的模型預測準確之平均值
+							標的代號,^TAIFEX：Taiwan Future Exchange Index，台灣綜合期貨指數,^TWII：TSEC weighted index，台灣加權股價指數,^GSPC：S&P 500，標準普爾 500 指數,^IXIC：INDEXNASDAQ，那斯達克綜合指數, ^DJI：Dow Jones Industrial Average，道瓊工業平均指數, ^RUT：Russell 2000，羅素 2000 指數, ^N225：INDEXNIKKEI，日經平均指數,^HSI：INDEXHANGSENG，香港恒生指數,綜合加權指數的模型預測準確之平均值
 							綜合加權指數之預測率（accuracy_score）, 0.5956  ,0.6433, 0.5679 , 0.68   , 0.6921, 0.6142 , 0.5862, 0.5978,0.6221375
 						</canvas>
 						<div><small><small>註：計到小數點下四位，部份模型使用了不同的參數。除了台指期使用分 K 棒之外，資料來源原則皆為 Yahoo Finance，原則以歷年日 K 棒的 Adj Closed 計算之。</small></div></small>
@@ -296,13 +296,13 @@
 								標的代號,BTC-USD,ETH-USD,ETC-USD,IOTA-USD,BNB-USD,XLM-USD,XRP-USD,DOGE-USD
 								Cryptocurrency之預測率（accuracy_score）,0.5454,0.3333,0.6666,0.5,0.8933,0.6666,0.3333,0.26
 						</canvas>
-						<div><small><small>註：部份模型使用了不同的參數。資料來源原則皆為 Yahoo Finance，原則以歷年日 K 棒的 Adj Closed 計算之。</small></div></small>
+						<div><small><small>註：部份模型使用了不同的參數。資料來源原則皆為 Yahoo Finance，因為 Cryptocurrency 不會休市，以 GMT+0 時每 24 小時價格計算之。</small></div></small>
 					</section>
 
 					<section>
 						<h3>對 Cryptocurrency 市場而言：</h3>
 						<hr>
-						<li align=left>各自獨立。</li>
+						<li align=left>有的非常高，有的非常低，各自獨立。</li>
 						<br>
 						<div align=left>很遺憾的，當今 Cryptocurrency 市場本質就是誰有錢就炒幣，</div>
 						<div align=left>所以<font color=#e5c07b>別想在這個一天振盪 20% 的市場作預測</font>，別人喊上車就上車。</div>
@@ -316,27 +316,36 @@
 					<section>
 						<h1>寫在所有之後</h1>
 						<hr>
+						<p>股海冥燈 vs 股海明燈</p>
 						<p>▼</p>
 					</section>
 
 					<section>
 						<h3>所以這個能幹嘛？</h3>
 						<hr>
-						<p><font color=#e5c07b>證明「技術指標」對大盤的預測效果比對個股還要好</font>。</p>
+						<p><font color=#e5c07b>證明「MA 的交叉」對大盤的預測效果比對個股還要好</font>。</p>
 						<p>但儘管如此，這個模型是在預測能不能識破騙線，</p>
 						<p>而不是預測「能不能賺錢」，謝謝。</p>
 						<br>
-						<p>如果真的有模型可以穩穩的獲利我自己操作養老就好惹啊^^</p>
+						<p>如果真的有模型可以穩穩的獲利我自己操作養老就好惹啊 ^q^</p>
 					</section>
 
 					<section>
-						<h3>那用技術分析買標的，可以發大財嗎？</h3>
+						<h3>那用技術分析去買標的，可以發大財嗎？</h3>
 						<hr>
 						<p>我個人認為技術分析<font color=#e5c07b>只能提供一個讓你「合理下注」的時間點</font>，</p>
 						<p>就像這個模型只是預測「交叉時是不是騙線？」</p>
 						<p>而非讓人預測未來的價格走向一定如何。</p>
 						<br>
 						<p>但當愈多人相信同一套「工具」，市場「或許」就會自我實現。</p>
+					</section>
+
+					<section>
+						<h3>那些還沒做的事</h3>
+						<hr>
+						<p>剛剛的資料都是用日 K 棒，如果用分 K 棒會不會比較好？</p>
+						<p>綜合 MACD、RSI、KD、DMI、BBands 等指標會更好嗎？ </p>
+						<p>和公司的股本大小、Marketcap有沒有關係？</p>
 					</section>
 				</section>
 
@@ -425,19 +434,19 @@ ma_short_period = # 設定短線日期
 ma_long_period  = # 設定長線日期
 # 要考慮資料裡每根 candle ohlcv 的單位
 
-ma_short_type = 0 # 設定短線使用的計算方式
-ma_long_type = 0 # 設定長線使用的計算方式
+ma_short_type =  # 設定短線使用的計算方式
+ma_long_type =  # 設定長線使用的計算方式
 # 在 talib 的 MA 函數裡，0 代表 SMA，1 代表 EMA，2 代表 WMA，3 代表 DEMA，4 代表 TEMA
 
-df['sma_short'] = talib.MA(df['Adj Close'], timeperiod = ma_short_period, matype = ma_short_type)
-df['sma_long'] = talib.MA(df['Adj Close'], timeperiod = ma_long_period, matype = ma_long_type)
+df['ma_short'] = talib.MA(df['Adj Close'], timeperiod = ma_short_period, matype = ma_short_type)
+df['ma_long'] = talib.MA(df['Adj Close'], timeperiod = ma_long_period, matype = ma_long_type)
 						</code></pre>
 					</section>
 
 					<section>
 							<h5>畫粗乃</h5>
 							<pre class="py"><code>
-df[['Adj Close', 'sma_short', 'sma_long']][-100:-1].plot(grid = True, figsize = (20, 10)) 
+df[['Adj Close', 'ma_short', 'ma_long']][-100:-1].plot(grid = True, figsize = (20, 10)) 
 # 畫最新的 50 天出來
 plt.show()
 							</code></pre>
@@ -450,7 +459,7 @@ plt.show()
 					<section>
 						<h5>計算出黃金交叉（Golden Cross）</h5>
 						<pre class="py"><code>
-df['diff'] = df['sma_short'] - df['sma_long'] # 計算「短線」減去「長線」之差
+df['diff'] = df['ma_short'] - df['ma_long'] # 計算「短線」減去「長線」之差
  
 asign = np.sign(df['diff']) # asign 會在這個數大於 0 時回傳 +1，小於 0 時回傳-1
 # 換句話說，asign 裡的 +1 就是當短線高於長線時，而 -1 就是長線高於短線時
@@ -491,14 +500,14 @@ print("Death Cross 死亡交叉總共有:",df['death_cross'].sum(),"次")
 # 理論上要一樣多或是只差一，因為穿越上去要再穿越下來，才能再穿越上去
 
 print(df[(ma_long_period-5):(ma_long_period+5)]) 
-# 檢查是否到第 ma_long_period 筆資料時（array[ma_long_period-1]）才出現 sma_long
+# 檢查是否到第 ma_long_period 筆資料時（array[ma_long_period-1]）才出現 ma_long
 						</code></pre>
 						<div align=left><small>終端輸出：</small></div>
 						<pre class="terminal"><code>
 Golden Cross 黃金交叉總共有: 409 次
 Death Cross 死亡交叉總共有: -410 次
 
-	    Adj Close  sma_short   sma_long      diff  golden_cross  death_cross
+	    Adj Close  	ma_short   ma_long      diff  golden_cross  death_cross
 Date                                                                            
 1950-02-07  17.230000     17.224        NaN       NaN             0            0
 1950-02-08  17.209999     17.256        NaN       NaN             0            0
@@ -594,7 +603,7 @@ print(df_golden_cross.tail())
 						</code></pre>
 						<div align=left><small>終端輸出：</small></div>
 						<pre class="py"><code>
-	      Adj Close    sma_short     sma_long   Close_Pre_1   Close_Pre_20   ...      Diff_Pre_2    Diff_Pre_3    Diff_Pre_4    Diff_Pre_5  result
+	      Adj Close     ma_short     ma_long   Close_Pre_1   Close_Pre_20   ...      Diff_Pre_2    Diff_Pre_3    Diff_Pre_4    Diff_Pre_5  result
 Date                                                                      ...                                                      
 2018-05-01  2654.800049  2655.819971  2651.959652   6.750000 -15.109863   ...     5.002661   7.537337   5.050683  -4.600310     0.0
 2018-05-07  2672.629883  2651.249951  2649.980648   9.209961  42.899903   ...     0.147974  -4.554020  -2.591015   3.394312     1.0
@@ -848,7 +857,7 @@ print(test_proba)
 				</section>
 <!--
 					<section>
-						<h5>閒閒沒事做也可以看怎麼分割資料會最好</h5>
+						<h5>閒閒沒事做也可以看怎麼設定參數會最好</h5>
 						<pre class="py"><code>
 thresholds = [.1,.2,.3,.4,.5,.6,.7,.8,.9]
 for i in zip(thresholds):
@@ -925,6 +934,7 @@ for i in zip(thresholds):
 				},
 
 				dependencies: [
+					//{ src: 'plugin/math-katex/math-katex.js', async: true },
 					{ src: 'plugin/chart/Chart.min.js' },
 					{ src: 'plugin/chart/csv2chart.js' },
 					{ src: 'plugin/menu/menu.js',async: true },

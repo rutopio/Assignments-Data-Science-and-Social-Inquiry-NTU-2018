@@ -3,13 +3,7 @@
 
  @font-face{
   font-family: 'Noto Serif CJK TC';
-  src : url('../fonts/NotoSerifCJKtc-Regular.otf');
-}
-
-
-@font-face{
-  font-family: 'Noto Sans CJK TC';
-  src : url('../fonts/NotoSansCJKtc-Regular.otf');
+  src : url('../font/NotoSerifCJKtc-Regular.otf');
 }
 
 /*********************************************
